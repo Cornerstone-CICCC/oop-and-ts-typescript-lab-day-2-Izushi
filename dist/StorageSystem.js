@@ -7,60 +7,52 @@
 // 4. Implement a method `getItems` that returns all stored items.
 // 5. Implement a method `findItem` that searches for an item by a given property value.
 // 6. Implement a method `updateItem` that updates an item by its property value.
-
-class MyStorage<T, U> {
-  items = []
-
-  addItem(item: T | U): string {
-    this.items.push(item)
-    if (typeof item === 'number') {
-      return `${item} added to storage.`
-    } else if (typeof item === 'object' && 'name' in item) {
-      return `User ${item.name} added.`
+class MyStorage {
+    items = [];
+    addItem(item) {
+        this.items.push(item);
+        if (typeof item === 'number') {
+            return `${item} added to storage.`;
+        }
+        else if (typeof item === 'object' && 'name' in item) {
+            return `User ${item.name} added.`;
+        }
     }
-  }
-
-  getItems(): (T | U)[] {
-    return this.items
-  }
-
-  removeItem(id: number): string {
-    if (this.items.length > 0 && typeof this.items[0] === 'number') {
-      this.items = this.items.filter(item => item !== id)
-      return `${id} removed from storage.`
-    } else if (this.items.length > 0 && typeof this.items[0] === 'object') {
-      const user = this.items.find(item => item.id === id)
-      if (user) {
-        this.items = this.items.filter(item => item.id !== id)
-        return `${user.name} removed form storage.`
-      }
+    getItems() {
+        return this.items;
     }
-  }
-
-  findItem(prop: string, val: string): T | U {
-    return this.items.find(item => item[prop] === val)
-  }
-
-  updateItem(prop: string, id: number, update: T | U): string {
-    const item = this.items.find(item => item[prop] === id)
-    if (item) {
-      Object.assign(item, update)
-      return `${item.name} updated successfully.`
+    removeItem(id) {
+        if (this.items.length > 0 && typeof this.items[0] === 'number') {
+            this.items = this.items.filter(item => item !== id);
+            return `${id} removed from storage.`;
+        }
+        else if (this.items.length > 0 && typeof this.items[0] === 'object') {
+            const user = this.items.find(item => item.id === id);
+            if (user) {
+                this.items = this.items.filter(item => item.id !== id);
+                return `${user.name} removed form storage.`;
+            }
+        }
     }
-  }
+    findItem(prop, val) {
+        return this.items.find(item => item[prop] === val);
+    }
+    updateItem(prop, id, update) {
+        const item = this.items.find(item => item[prop] === id);
+        if (item) {
+            Object.assign(item, update);
+            return `${item.name} updated successfully.`;
+        }
+    }
 }
-
 // Test cases
-const numberStrStorage = new MyStorage<number, string>();
-
+const numberStrStorage = new MyStorage();
 console.log(numberStrStorage.addItem(10)); // "10 added to storage."
 console.log(numberStrStorage.addItem(20)); // "20 added to storage."
 console.log(numberStrStorage.getItems()); // [10, 20]
 console.log(numberStrStorage.removeItem(10)); // "10 removed from storage."
 console.log(numberStrStorage.getItems()); // [20]
-
-const userStorage = new MyStorage<{ id: number; name: string }, string>();
-
+const userStorage = new MyStorage();
 console.log(userStorage.addItem({ id: 1, name: "Alice" })); // "User Alice added."
 console.log(userStorage.addItem({ id: 2, name: "Bob" })); // "User Bob added."
 console.log(userStorage.getItems()); // [{ id: 1, name: "Alice" }, { id: 2, name: "Bob" }]
